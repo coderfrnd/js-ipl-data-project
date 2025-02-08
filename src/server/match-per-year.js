@@ -13,10 +13,7 @@ function numberofmatch(data){
 numberofmatch(matches)
 console.log(countmatch);
 fs.writeFile("../public/output/match-per-season.json",JSON.stringify(countmatch, null, 2), (err)=>{
-  if(err){
-    console.log("There is some error ", err);
-  }
-  else console.log("okk done ");
+  (err) ?    console.log("There is some error ", err) : console.log("okk done ");
 });
 
 
