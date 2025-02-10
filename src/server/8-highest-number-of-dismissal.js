@@ -1,6 +1,6 @@
 const deliveries = require("../data/deliveries.json");
 const matches = require("../data/matches.json");
-const writeFile = require("../public/writefile/write-file");
+const writeFile = require("../data/writefile/write-file.js");
 
 
 function createbowlerdata(data){

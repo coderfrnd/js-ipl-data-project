@@ -1,7 +1,7 @@
 
 const matches = require('../data/matches.json')
 const deliveries = require('../data/deliveries.json')
-const writeFile = require('../public/writefile/write-file.js')
+const writeFile = require('../data/writefile/write-file.js')
 
 
 
