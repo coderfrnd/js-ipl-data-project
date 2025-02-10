@@ -1,40 +1,45 @@
 const matches = require('../data/matches.json')
 const deliveries = require('../data/deliveries.json')
-const fs = require('fs');
+const writeFile = require('../public/writefile/write-file.js')
 
-let matchid = matches.filter((info) => info.season == 2016).map((info) => {
-   return info.id
-})
-let answer ={}
-function extrarunconceded(data){
+
+function  getmatchid(matches){
+   let matchid = matches.filter((info) => info.season == 2016).map((info) => {
+      // console.log(info);
+      // Here info give single object and using . property we extract only season 2016 object then after using map which return us array of matchid 
+      
+      return info.id
+   })
+   return matchid
+}
+// This is a function which is used to count extra run conceded it takes two parameter first one matchperball dataa and second one is matchid which we extract from previous function getmatchid()
+
+function extrarunconceded(data,matchid){
+   let extrarun ={}  // Intialize empty object to store data of extra-run 
+
    matchid.forEach((num)=>{
       for(let key in data){
          if(data[key].match_id == num){
-            if(answer[data[key].bowling_team]){
+            if(extrarun[data[key].bowling_team]){
                let convert = data[key].extra_runs
-               answer[data[key].bowling_team]["extrarun"] += Number(convert);
-               // console.log(answer[data[key].bowling_team]);
+               extrarun[data[key].bowling_team]["extrarun"] += Number(convert);
+               // console.log(extrarun[data[key].bowling_team]);
                
             }
             else {
                let convert = data[key].extra_runs
-               answer[data[key].bowling_team] = {extrarun : Number(convert)}
+               extrarun[data[key].bowling_team] = {extrarun : Number(convert)}
             }
 
          }
       }
    })
+   return extrarun
 }
+let matchid = getmatchid(matches)
+// console.log(matchid);
 
-fs.writeFile('../public/output/extra-run-conceded-per-team.json',JSON.stringify(answer,null,2),(err)=>{
-if(err){
-   console.log(err);
-   
-}
-else console.log("done okk ");
+let extrarundata = extrarunconceded(deliveries,matchid)
+// console.log(extrarun);
 
-})
-
-
-extrarunconceded(deliveries)
-// console.log(answer);
+writeFile("3-extra-run-conceded-in-2016.json",JSON.stringify(extrarundata,null,3))

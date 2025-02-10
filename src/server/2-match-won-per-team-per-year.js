@@ -1,40 +1,40 @@
 
 const matches = require('../data/matches.json')
 const deliveries = require('../data/deliveries.json')
-// const fs = require('node:fs');
-const fs = require('fs');
-// const { log } = require('console');
+const writeFile = require('../public/writefile/write-file.js')
 
-let answer ={}
+
 
 function matchwonperyear(data){
-
+    let resultperyear ={}
     for(let key in data){
 
         let winner = data[key]["winner"]
         let season = data[key]["season"]
         // console.log(season);
-        season=season.toString()
-     if( answer[winner]){
-        if( answer[winner][season])  answer[winner][season]++;
-        else answer[winner][season]=1
+        season=season.toString()  
+        //  Here Converting num into string so easy for counting 
+     if( resultperyear[winner]){
+        // Here if team name object present then check that season exist or not if not then else condition create and intialize and give count one and if present then increase the count just in if condition
+        if( resultperyear[winner][season])  resultperyear[winner][season]++;
+        else resultperyear[winner][season]=1
      }
    else{
-    answer[winner]= {[season] : 1}
+    // If that winner team is not present then create a that team name object 
+    resultperyear[winner]= {[season] : 1}
 
    }
       
        
         
     }
+    return resultperyear
 }
 
-let x= matchwonperyear(matches)
-// console.log(answer["Delhi Daredevils"]["2016"]);
-console.log(answer);
+let resultperyear = matchwonperyear(matches)
+// let x= matchwonperyear(matches)
+// console.log(resultperyear["Delhi Daredevils"]["2016"]);
+// console.log(resultperyear);
 
-fs.writeFile('../public/output/match-won-per-team-per-year.json' , JSON.stringify(answer,null,2),(err)=>{
-    (err) ? console.log("There is some error", err):console.log("okk done");
-    
-    
-})
+
+writeFile("2-match-won-per-team-per-year.json",JSON.stringify(resultperyear,null,2))
