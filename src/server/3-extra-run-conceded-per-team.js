@@ -1,45 +1,42 @@
-const matches = require('../data/matches.json')
-const deliveries = require('../data/deliveries.json')
-const writeFile = require('../data/writefile/write-file.js')
+import {matches}  from './readfile/readfile.js'
+import {delivery} from './readfile/readfile.js'
+import writefile from './writefile/write-file.js';
 
+function collectmatchid(matchesdata){
+   let matchid = matchesdata.reduce((acc,ele)=>{
+      if(ele.season == '2016'){
+        acc.push(ele.id)
+      }
+      return acc
+   },[])
 
-function  getmatchid(matches){
-   let matchid = matches.filter((info) => info.season == 2016).map((info) => {
-      // console.log(info);
-      // Here info give single object and using . property we extract only season 2016 object then after using map which return us array of matchid 
-      
-      return info.id
-   })
    return matchid
 }
-// This is a function which is used to count extra run conceded it takes two parameter first one matchperball dataa and second one is matchid which we extract from previous function getmatchid()
 
-function extrarunconceded(data,matchid){
-   let extrarun ={}  // Intialize empty object to store data of extra-run 
-
-   matchid.forEach((num)=>{
-      for(let key in data){
-         if(data[key].match_id == num){
-            if(extrarun[data[key].bowling_team]){
-               let convert = data[key].extra_runs
-               extrarun[data[key].bowling_team]["extrarun"] += Number(convert);
-               // console.log(extrarun[data[key].bowling_team]);
-               
-            }
-            else {
-               let convert = data[key].extra_runs
-               extrarun[data[key].bowling_team] = {extrarun : Number(convert)}
-            }
-
+function calculateextrarun(deliverydata){
+   let matchid = collectmatchid(matches)
+   // let teamcal = {}
+           
+      let teamcal= deliverydata.reduce((obj,singobj)=>{
+         let id = singobj.match_id
+         if(matchid.includes(id)){
+            let name = singobj.bowling_team;
+                           let run =singobj.extra_runs;
+                          run = parseInt(run)
+                           if(obj[name]){
+                              obj[name]["extra-runs"]+=run
+                           }
+                           else {
+                              obj[name] = {
+                                 "extra-runs" : run
+                              }
+                           }
          }
-      }
-   })
-   return extrarun
+         return obj
+      },{})
+   return teamcal
+
 }
-let matchid = getmatchid(matches)
-// console.log(matchid);
-
-let extrarundata = extrarunconceded(deliveries,matchid)
-// console.log(extrarun);
-
-writeFile("3-extra-run-conceded-in-2016.json",JSON.stringify(extrarundata,null,3))
+let extrauns = calculateextrarun(delivery)
+// console.log(a);
+writefile("3-extra-run-conceded-in-2016.json",extrauns)
