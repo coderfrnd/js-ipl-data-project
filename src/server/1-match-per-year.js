@@ -1,26 +1,28 @@
-const matches = require('../data/matches.json')
-const deliveries = require('../data/deliveries.json')
-const writeFile = require('../data/writefile/write-file.js')
+import writeFile from './writefile/write-file.js';
+import {matches}  from './readfile/readfile.js'
+import {delivery} from './readfile/readfile.js'
+import writefile from './writefile/write-file.js';
 
-function numberofmatch(data){
-   
-let countmatch = {}
-     for(let key in data) {
-    // Here key is every single single individual object key and object is value
-      
-      if(countmatch[data[key].season]) countmatch[data[key].season]++ 
-      else countmatch[data[key].season] = 1;
 
-      // Here data[key].season give us every year information about which year then using countmatch object we calculate match
-     }
-     return countmatch
+
+
+
+function matchesplayperyear(data){
+     console.log(typeof data);
+     
+  let ans =  data.reduce((arr,element) => {
+          if(arr[element.season]){
+               arr[element.season]++;
+          }
+          else{
+               arr[element.season] = 1
+          }
+      return arr
+     },{})
+     return ans
 }
+console.log(Array.isArray(matches));
 
-let countmatch = numberofmatch(matches)
-// console.log(countmatch);
-// fs.writeFile("../public/output/match-per-season.json",JSON.stringify(countmatch, null, 2), (err)=>{
-//   (err) ?    console.log("There is some error ", err) : console.log("okk done ");
-// });
+ let seasonmatchdata = matchesplayperyear(matches)
+writefile("1-match-per-season.json",seasonmatchdata)
 
-// Writefile function a custom function which is take two argument one is name and second one is in which formate we want to convert
-writeFile("1-match-per-season.json",JSON.stringify(countmatch,null,3))

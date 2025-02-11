@@ -30,7 +30,7 @@ function economialbowler(data) {
                 // For economical data only legal delivery counted as bowl and no-bowl and wide-run count but bowl not
           if (data[key].ball < 7) bowlersdata[bowler]["totalbowls"]++;
         } else {
-            // Bowler name object not present bcz first time bowler name come so create new object of bowler name  
+            // Bowler name object not present bcz first time bowler name come so create new object of bowler name  and add total run initialize total bowl :1
           bowlersdata[bowler] = {
             totalruns: totalrun,
             totalbowls: 1,
