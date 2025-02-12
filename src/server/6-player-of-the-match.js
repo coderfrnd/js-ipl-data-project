@@ -27,13 +27,13 @@ function manofthematch(matchesdata){
         function findmostmanofthematch(){
             let data = manofthematch(matches)
              data = Object.entries(data)
-            data =  data.reduce((acc,ele)=>{
+             data =  data.reduce((acc,ele)=>{
                 let singobj = ele[1]
                 let mostmomatch =0 ;
                 for(let key in singobj){
                   if(singobj[key]>mostmomatch){
                             acc[ele[0]] = {
-                                [key] : singobj[key]
+                                [key] :   singobj[key]
                             }
                             mostmomatch = singobj[key]
                   }                    
