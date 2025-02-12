@@ -1,70 +1,58 @@
-const deliveries = require("../data/deliveries.json");
-const matches = require("../data/matches.json");
-const writeFile = require("../data/writefile/write-file.js");
+import {matches}  from './readfile/readfile.js'
+import {delivery} from './readfile/readfile.js'
+import writefile from './writefile/write-file.js';
 
+function  highestnumofwicket(deliverdata){
+       let data = deliverdata
 
-function createbowlerdata(data){
+     data = deliverdata.reduce((acc,ele)=>{
 
-     let profiledata = {}
-
-    for(let key in data){
-      
-            let obj = data[key]
-            
-            if(obj["player_dismissed"]!=""){
-                let batsman = obj["batsman"]
-                let bowler =obj["bowler"]
-                if(profiledata[bowler]){
-                   if(profiledata[bowler][batsman])profiledata[bowler][batsman]++;
-                   else {
-                    profiledata[bowler][batsman] = 1 
-                   }
-                }
-                else{
-                    profiledata[bowler] = {
-                        [batsman] : 1
+           if(ele.player_dismissed !== ""){
+                 if(acc[ele.bowler]){
+                      if(acc[ele.bowler][ele.batsman]){
+                        acc[ele.bowler][ele.batsman]++
+                      }
+                      else {
+                        acc[ele.bowler][ele.batsman] = 1
+                      }
+                 }
+                 else{
+                    acc[ele.bowler] = {
+                        [ele.batsman] : 1
                     }
-                }  
-          }   
-    }
-    return profiledata
+                 }
+           }
+       return acc
+       },{})
+    return data
+
+       
 }
 
-let bowlerwicketdata = createbowlerdata(deliveries)
+          function highestonly(){
+            let bowlerdata = highestnumofwicket(delivery)
+              bowlerdata = Object.entries(bowlerdata) 
+              let max =0
+                bowlerdata =   bowlerdata.reduce((acc,ele)=>{
+                    let singobj = ele[1] 
+                   
+                     for(let key in singobj){
+                        if(singobj[key]>max){
+                            max=singobj[key]
+                             acc = {
+                                [ele[0]] : {
+                                    "name" : key,
+                                     "total-wicket":max
+                                }
+                             }
+                             
+                        }
+                     }
+                     return acc
+                   },{})
+                return bowlerdata
+                   
 
-function findmostdismisial(bowlerwicketdatadata){
-    let mostdismisial ={
-        "no-of-wicket":0
-        }
-    for(let key in bowlerwicketdata){
-       let singleobj = bowlerwicketdata[key]
-       let bowlername = key
-       let countofwicket =0
-    for(let batsman in singleobj){
-        // console.log(singleobj[batsman]);
-        if(singleobj[batsman]>mostdismisial["no-of-wicket"]) {
-            countofwicket = singleobj[batsman]
-
-            mostdismisial = {
-               [bowlername ]:batsman,
-                "no-of-wicket" : countofwicket
-            }
-        }
-   
-
-        
-        
-    }
-   
-    
-   
-    
-        
-    }
-    return mostdismisial
-}
-let mostdismisial= findmostdismisial(bowlerwicketdata)
-
-
-
-writeFile("8-highest-number-of-dismisial.json",JSON.stringify(mostdismisial,null,3))
+          }
+       
+  writefile("8-highest-number-of-dismisial.json",highestonly())

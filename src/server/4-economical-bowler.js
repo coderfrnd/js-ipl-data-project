@@ -40,8 +40,6 @@ return ans
 
        function economyratecalculate(){
         let requireddata = topteneconomicalbowler(delivery)
-      //  requireddata = 
-      //  console.log(requireddata);
       for(let key in requireddata){
         let totalrun = requireddata[key]["total-run"]
         let totalbowl = requireddata[key]["total-bowl"]
@@ -58,9 +56,7 @@ return ans
      return sortedData
        }
 
-// let x= topteneconomicalbowler(delivery)
-// console.log(x);
 let topteneconomicalbowlerdata = economyratecalculate().slice(0,10)
-// console.log(x);
+
 
 writefile("4-economical-bowler.json",topteneconomicalbowlerdata)

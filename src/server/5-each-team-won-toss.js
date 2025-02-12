@@ -1,34 +1,23 @@
-const matches = require('../data/matches.json')
-const deliveries = require('../data/deliveries.json')
-// const fs = require('fs');
-const writeFile = require('../data/writefile/write-file.js')
+import {matches}  from './readfile/readfile.js'
+import {delivery} from './readfile/readfile.js'
+import writefile from './writefile/write-file.js';
 
-
-let answer = {}
-
- function tossandmatchwinnerteam(data){
-  
-    for(let key in data){
-        if(data[key].toss_winner == data[key].winner){
-             
-            if(answer[data[key].toss_winner]){
-                answer[data[key].toss_winner]++;
+function matchwonandtosswon(matchdata){
+ let tossandmatchwondata =  matchdata.reduce((acc,ele)=>{
+        if(ele.toss_winner == ele.winner){
+            if(acc[ele.toss_winner]) {
+                acc[ele.toss_winner]++;
             }
-            else answer[data[key].toss_winner] = 1;
+            else {
+               acc[ele.toss_winner] = 1
+            }
+          
         }
-    }
- }
+        return acc
+    },{})
 
- tossandmatchwinnerteam(matches)
+    return tossandmatchwondata
+}
+let tossandmatchwondata = matchwonandtosswon(matches)
+writefile("5-each-team-won-toss.json",tossandmatchwondata)
 
-
- writeFile("5-each-team-won-toss.json",JSON.stringify(answer,null,3))
-
-//  fs.writeFile('../public/output/each-team-won-toss-match.json', JSON.stringify(answer,null,3),(err)=>{
-//     (err) ? console.log("There is a error") : console.log("Good");
-    
-    
-//  })
-
-//  console.log(answer);
- 

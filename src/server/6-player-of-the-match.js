@@ -1,71 +1,49 @@
-const matches = require('../data/matches.json')
-const deliveries = require('../data/deliveries.json')
-const fs = require('fs');
-const writeFile = require('../public/writefile/write-file.js')
+import {matches}  from './readfile/readfile.js'
+import {delivery} from './readfile/readfile.js'
+import writefile from './writefile/write-file.js';
 
 
-
-function playerofthematch(data){
-    let answer ={}
-
-       for(let key in data){
-             
-           if(answer[data[key].season]){
-            if(answer[data[key].season][data[key].player_of_match]) {
-                answer[data[key].season][data[key].player_of_match]++;
+function manofthematch(matchesdata){
+     
+  let data = matchesdata.reduce((acc,ele)=>{
+        if(acc[ele.season]){
+            if(acc[ele.season][ele.player_of_match]){
+                acc[ele.season][ele.player_of_match]++;
             }
             else {
-                answer[data[key].season][data[key].player_of_match]= 1;
+                acc[ele.season][ele.player_of_match] = 1
             }
-           }
-           else {
-            answer[data[key].season] = {
-                [data[key].player_of_match] : 1
+        }
+        else {
+            acc[ele.season] = {
+                [ele.player_of_match] : 1
             }
-           }
-       }
-       return answer
+        }
+        return acc
+    },{})
+    return data
 }
 
-let answer = playerofthematch(matches)
+        function findmostmanofthematch(){
+            let data = manofthematch(matches)
+             data = Object.entries(data)
+            data =  data.reduce((acc,ele)=>{
+                let singobj = ele[1]
+                let mostmomatch =0 ;
+                for(let key in singobj){
+                  if(singobj[key]>mostmomatch){
+                            acc[ele[0]] = {
+                                [key] : singobj[key]
+                            }
+                            mostmomatch = singobj[key]
+                  }                    
+                }
+                return acc
 
+              },{})
+           
+             return data
 
+        }
 
-
-          function findingperseason(data){
-            let playersname ={}
-            for(let key in data){
-  
-                let find = data[key]
-                     playersname[key] ={}
-                     let a=0; 
-                 for(let val in find){
-                  if(find[val]>=a){
-                     if(find[val]==a){
-                         playersname[key].push(val)
-                     }
-                     else{
-                      playersname[key] = [val]
-                     }
-                      a=find[val];
-                  }   
-                 }
-                    
-              }
-              return playersname
-
-          }
-
-          let playersname = findingperseason(answer)
-
-
-
-
-
-
-
-// fs.writeFile('../public/output/6-player-of-the-match.json',JSON.stringify(playersname,null,3),(err)=>{
-//     (err) ? console.log("Here Some Problem",err) : console.log("Everything is fine");
-// })
-
-writeFile("6-play-of-the-match.json",JSON.stringify(playersname,null,3))
+    writefile("6-player-of-the-match.json",findmostmanofthematch(matches))

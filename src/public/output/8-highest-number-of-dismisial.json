@@ -1,4 +1,6 @@
 {
-   "Z Khan": "MS Dhoni",
-   "no-of-wicket": 7
+   "Z Khan": {
+      "name": "MS Dhoni",
+      "total-wicket": 7
+   }
 }
