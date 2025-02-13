@@ -8,7 +8,7 @@ let matchid = matches
   .map((info) => {
     return info.id;
 
-    // Here just counting matchid means which match happen in 2015 there match id  
+    // Here just counting matchid means which match happen in 2015 there match id
   });
 // console.log(matchid);
 
@@ -17,20 +17,20 @@ function economialbowler(data) {
 
   matchid.forEach((num) => {
     for (let key in data) {
-        // Here we are checking like matchid and num are equal or not 
+      // Here we are checking like matchid and num are equal or not
       if (data[key].match_id == num) {
         let bowler = data[key].bowler;
         let totalrun =
           data[key].total_runs - data[key].legbye_runs - data[key].penalty_runs;
         //   Here some runs which is not count in bowler account so that are subtract from total run
         totalrun = Number(totalrun); // Converting string num into numbers
-        // If that bowler name object already present so just add run in that object 
+        // If that bowler name object already present so just add run in that object
         if (bowlersdata[bowler]) {
           bowlersdata[bowler]["totalruns"] += totalrun;
-                // For economical data only legal delivery counted as bowl and no-bowl and wide-run count but bowl not
+          // For economical data only legal delivery counted as bowl and no-bowl and wide-run count but bowl not
           if (data[key].ball < 7) bowlersdata[bowler]["totalbowls"]++;
         } else {
-            // Bowler name object not present bcz first time bowler name come so create new object of bowler name  
+          // Bowler name object not present bcz first time bowler name come so create new object of bowler name
           bowlersdata[bowler] = {
             totalruns: totalrun,
             totalbowls: 1,
@@ -53,13 +53,12 @@ function economicalconverter(data) {
     x = x / data[key].totalbowls;
     y = data[key].totalbowls;
     // console.log(y);
-// Only two digit number are allowed 
+    // Only two digit number are allowed
     bowlersdata[key]["economy"] = parseFloat(x.toFixed(2));
   }
 }
 
 economicalconverter(bowlersdata);
-
 
 // Using Object entries for converting object into arrays so we can perform sort action
 let economialdata = Object.entries(bowlersdata);

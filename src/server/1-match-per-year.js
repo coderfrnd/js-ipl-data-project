@@ -18,9 +18,5 @@ let countmatch = {}
 
 let countmatch = numberofmatch(matches)
 // console.log(countmatch);
-// fs.writeFile("../public/output/match-per-season.json",JSON.stringify(countmatch, null, 2), (err)=>{
-//   (err) ?    console.log("There is some error ", err) : console.log("okk done ");
-// });
-
 // Writefile function a custom function which is take two argument one is name and second one is in which formate we want to convert
 writeFile("1-match-per-season.json",JSON.stringify(countmatch,null,3))
