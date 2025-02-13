@@ -1,120 +1,87 @@
-const deliveries = require("../data/deliveries.json");
-const matches = require("../data/matches.json");
-const writeFile = require("../public/writefile/write-file");
+import { matches } from "./readfile/readfile.js";
+import { delivery } from "./readfile/readfile.js";
+import writefile from "./writefile/write-file.js";
 
-function matchidseason(data) {
-  let answer = {};
-  for (let key in data) {
-    let year = data[key]["season"];
-    if (answer[year]) {
-      answer[year]["matchid"].push(data[key]["id"]);
+function findMatchIdandSeason(matchdata) {
+  let seasondata = matchdata.reduce((yearAndMatch, ele) => {
+    if (yearAndMatch[ele.season]) {
+      yearAndMatch[ele.season].push(ele.id);
     } else {
-      answer[year] = {
-        matchid: [],
-      };
+      yearAndMatch[ele.season] = [];
+      yearAndMatch[ele.season].push(ele.id);
     }
-  }
-  return answer;
+
+    return yearAndMatch;
+  }, {});
+  return seasondata;
 }
-let seasondata = matchidseason(matches);
 
-// console.log(answer);
-function totalbowlandrun(seasondata, deliverdata) {
-  for (let key in seasondata) {
-    let year = key;
-    let matchid = seasondata[key]["matchid"];
-    //    console.log(matchid);
-
-    for (let key in deliverdata) {
-      let id = deliverdata[key]["match_id"];
-      let playername = deliverdata[key]["batsman"];
-      if (matchid.includes(id)) {
-        if (seasondata[year][playername]) {
-          seasondata[year][playername]["total-runs"] += parseFloat(
-            deliverdata[key]["batsman_runs"]
-          );
-          if (
-            deliverdata[key]["wide_runs"] == 0 ||
-            deliverdata[key]["noball_runs"] == 0
-          ) {
-            seasondata[year][playername]["total-bowl"]++;
+function findStrikeRate(deliverydata) {
+  let seasonData = findMatchIdandSeason(matches);
+  let data = deliverydata.reduce((strikeRate, ele) => {
+    let id = ele.match_id;
+    let batsmanName = ele.batsman;
+    let totalrun = ele.batsman_runs;
+    let totalbowl = 1;
+    if (ele.wide_runs > 0 || ele.noball_runs > 0) totalbowl = 0;
+    totalrun = parseFloat(totalrun);
+    for (let key in seasonData) {
+      if (seasonData[key].includes(id)) {
+        if (strikeRate[batsmanName]) {
+          if (strikeRate[batsmanName][key]) {
+            strikeRate[batsmanName][key]["total-run"] += totalrun;
+            strikeRate[batsmanName][key]["total-bowl"] += totalbowl;
+          } else {
+            strikeRate[batsmanName][key] = {
+              "total-run": totalrun,
+              "total-bowl": totalbowl,
+            };
           }
         } else {
-          let totalbowl = 1;
-          if (
-            deliverdata[key]["wide_runs"] > 0 ||
-            deliverdata[key]["noball_runs"] > 0
-          ) {
-            totalbowl = 0;
-          }
-          seasondata[year][playername] = {
-            "total-runs": parseFloat(deliverdata[key]["batsman_runs"]),
-            "total-bowl": totalbowl,
+          strikeRate[batsmanName] = {
+            [key]: {
+              "total-run": totalrun,
+              "total-bowl": totalbowl,
+            },
           };
         }
+
+        break;
       }
     }
-  }
-}
 
-totalbowlandrun(seasondata, deliveries);
-
-function deletematchid(data) {
-  for (let key in data) {
-    for (let val in data[key]) {
-      delete data[key].matchid;
-
-      // console.log(data[key]);
-    }
-  }
+    return strikeRate;
+  }, {});
   return data;
 }
-
-seasondata = deletematchid(seasondata);
-
-function strikeratecal(data) {
-  // let strikerate = []
-  for (let year in data) {
-    let playerinformationobject = data[year];
-    for (let playerinformation in playerinformationobject) {
-      let run = data[year][playerinformation]["total-runs"];
-      let bowl = data[year][playerinformation]["total-bowl"];
-      let rate = run / bowl;
-      rate = rate * 100;
-      // For Round of two digit
-      rate = rate.toFixed(2);
-
-      data[year][playerinformation] = {
-        strikerate: rate,
-      };
-    }
-    // console.log(playerinformationobject);
-  }
+    
+function calculateStrikeRate(){
+    let runAndBowlData = findStrikeRate(delivery)
+    let strikeRateperplayer = []
+    
+   
+     for(let key in runAndBowlData){
+             let perSeasonData = Object.entries(runAndBowlData[key])
+    let  data =   perSeasonData.reduce((singobj,ele)=>{
+            
+            let totalrun =    ele[1]["total-run"]
+            let totalbowl = ele[1]["total-bowl"]
+            let strike = totalrun*6/totalbowl
+            strike = strike.toFixed(2)
+            if(singobj[key]){
+              singobj[key][ele[0]] = strike
+            }
+            else{
+              singobj[key] = {
+                [ele[0]] : strike
+              }
+            }
+            return singobj
+            
+            },{})
+            strikeRateperplayer.push(data)        
+     }
+return strikeRateperplayer
 }
-
-strikeratecal(seasondata);
-
-let playerstrike = {};
-
-function playerobj(data) {
-  for (let year in data) {
-    for (let playername in data[year]) {
-      if (playerstrike[playername]) {
-        playerstrike[playername][year] = data[year][playername]["strikerate"];
-      } else {
-        playerstrike[playername] = {
-          [year]: data[year][playername]["strikerate"],
-        };
-      }
-    }
-    // console.log(data[year]);
-  }
-}
-
-playerobj(seasondata);
-//    console.log(playerstrike);
-//   console.log(seasondata);
-writeFile(
-  "7-strike-rate-per-season.json",
-  JSON.stringify(playerstrike, null, 3)
-);
+calculateStrikeRate(delivery)
+writefile("7-strike-rate-per-season.json",calculateStrikeRate(delivery))

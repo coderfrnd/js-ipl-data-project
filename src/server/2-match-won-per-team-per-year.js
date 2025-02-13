@@ -1,24 +1,23 @@
 import {matches}  from './readfile/readfile.js'
-import {delivery} from './readfile/readfile.js'
 import writefile from './writefile/write-file.js';
 
 
 function matchwonperyear(matchdata){
-    let ans = matchdata.reduce((obj,ele)=>{ 
-          if(obj[ele.winner]){
-            if(obj[ele.winner][ele.season])obj[ele.winner][ele.season]++;
+    let perTeam = matchdata.reduce((perTeam,ele)=>{ 
+          if(perTeam[ele.winner]){
+            if(perTeam[ele.winner][ele.season])perTeam[ele.winner][ele.season]++;
             else {
-                obj[ele.winner][ele.season] =1 
+                perTeam[ele.winner][ele.season] =1 
             }
           }
           else {
-            obj[ele.winner] = {
+            perTeam[ele.winner] = {
                 [ele.season]:1
             }
           }
-              return obj
+              return perTeam
     },{})
-    return ans
+    return perTeam
 }
 
 let winnerteam = matchwonperyear(matches)
