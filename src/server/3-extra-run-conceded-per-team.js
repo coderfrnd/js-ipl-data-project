@@ -17,7 +17,6 @@ function calculateextrarun(deliverydata) {
   let matchid = collectmatchid(matches);
 
   let perteamcal = deliverydata.reduce((extraRun, singobj) => {
-
     let id = singobj.match_id;
     if (matchid.includes(id)) {
       let name = singobj.bowling_team;

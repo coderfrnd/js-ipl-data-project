@@ -48,7 +48,7 @@ function economyRateCalculate() {
   }
 
   const sortedData = Object.entries(requireddata)
-    .sort((a, b) => parseFloat(a[1]) - parseFloat(b[1])) 
+    .sort((a, b) => parseFloat(a[1]) - parseFloat(b[1]))
     .map(([player, economy]) => ({ player, economy }));
 
   return sortedData;
