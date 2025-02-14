@@ -46,8 +46,4 @@ function findingperseason(data) {
 
 let playersname = findingperseason(answer);
 
-// fs.writeFile('../public/output/6-player-of-the-match.json',JSON.stringify(playersname,null,3),(err)=>{
-//     (err) ? console.log("Here Some Problem",err) : console.log("Everything is fine");
-// })
-
 writeFile("6-play-of-the-match.json", JSON.stringify(playersname, null, 3));

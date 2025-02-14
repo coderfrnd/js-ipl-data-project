@@ -3,22 +3,20 @@ const deliveries = require("../data/deliveries.json");
 const writeFile = require("../data/writefile/write-file.js");
 
 function getmatchid(matches) {
-  let matchid = matches
-    .filter((info) => info.season == 2016)
-    .map((info) => {
-      // console.log(info);
-      // Here info give single object and using . property we extract only season 2016 object then after using map which return us array of matchid
-
-      return info.id;
-    });
-  return matchid;
+    let matchIdDetails = []
+    for(let key in matches){
+   if(matches[key].season == '2016'){
+    matchIdDetails.push(matches[key].id)
+   } 
+    }
+    return matchIdDetails 
 }
 // This is a function which is used to count extra run conceded it takes two parameter first one matchperball dataa and second one is matchid which we extract from previous function getmatchid()
 
 function extrarunconceded(data, matchid) {
   let extrarun = {}; // Intialize empty object to store data of extra-run
-
-  matchid.forEach((num) => {
+let matchId = getmatchid(matches)
+  matchId.forEach((num) => {
     for (let key in data) {
       if (data[key].match_id == num) {
         if (extrarun[data[key].bowling_team]) {

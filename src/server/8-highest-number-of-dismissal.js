@@ -26,14 +26,14 @@ function createbowlerdata(data) {
   return profiledata;
 }
 
-let bowlerwicketdata = createbowlerdata(deliveries);
+let bowlerWicketData = createbowlerdata(deliveries);
 
-function findmostdismisial(bowlerwicketdatadata) {
+function findmostdismisial(bowlerWicketData) {
   let mostdismisial = {
     "no-of-wicket": 0,
   };
-  for (let key in bowlerwicketdata) {
-    let singleobj = bowlerwicketdata[key];
+  for (let key in bowlerWicketData) {
+    let singleobj = bowlerWicketData[key];
     let bowlername = key;
     let countofwicket = 0;
     for (let batsman in singleobj) {
@@ -50,7 +50,7 @@ function findmostdismisial(bowlerwicketdatadata) {
   }
   return mostdismisial;
 }
-let mostdismisial = findmostdismisial(bowlerwicketdata);
+let mostdismisial = findmostdismisial(bowlerWicketData);
 
 writeFile(
   "8-highest-number-of-dismisial.json",

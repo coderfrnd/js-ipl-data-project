@@ -3,19 +3,22 @@ const deliveries = require("../data/deliveries.json");
 
 const writeFile = require("../data/writefile/write-file.js");
 
-let matchid = matches
-  .filter((info) => info.season == 2015)
-  .map((info) => {
-    return info.id;
+function matchid (matches){
+  let matchIdDetails = []
+       for(let key in matches){
+      if(matches[key].season == '2015'){
+       matchIdDetails.push(matches[key].id)
+      }
+     
+       }
+       return matchIdDetails 
+}
 
-    // Here just counting matchid means which match happen in 2015 there match id
-  });
-// console.log(matchid);
 
 function economialbowler(data) {
   let bowlersdata = {};
-
-  matchid.forEach((num) => {
+  let matchId = matchid(matches)
+  matchId.forEach((num) => {
     for (let key in data) {
       // Here we are checking like matchid and num are equal or not
       if (data[key].match_id == num) {
