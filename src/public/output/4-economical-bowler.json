@@ -1,82 +1,82 @@
 [
    [
-      "RN ten Doeschate",
+      "N Rana",
       {
-         "totalruns": 24,
+         "totalruns": 18,
          "totalbowls": 6,
-         "economy": 4
+         "economy": 3
       }
    ],
    [
-      "J Yadav",
+      "Sachin Baby",
       {
-         "totalruns": 174,
-         "totalbowls": 42,
-         "economy": 4.14
+         "totalruns": 48,
+         "totalbowls": 10,
+         "economy": 4.8
       }
    ],
    [
-      "V Kohli",
+      "MR Marsh",
       {
-         "totalruns": 60,
-         "totalbowls": 11,
-         "economy": 5.45
+         "totalruns": 270,
+         "totalbowls": 54,
+         "economy": 5
       }
    ],
    [
-      "R Ashwin",
+      "YK Pathan",
       {
-         "totalruns": 1368,
-         "totalbowls": 234,
-         "economy": 5.85
+         "totalruns": 198,
+         "totalbowls": 36,
+         "economy": 5.5
       }
    ],
    [
-      "S Nadeem",
+      "JW Hastings",
       {
-         "totalruns": 258,
-         "totalbowls": 42,
-         "economy": 6.14
+         "totalruns": 222,
+         "totalbowls": 40,
+         "economy": 5.55
       }
    ],
    [
-      "Parvez Rasool",
+      "S Gopal",
       {
-         "totalruns": 186,
-         "totalbowls": 30,
-         "economy": 6.2
+         "totalruns": 108,
+         "totalbowls": 18,
+         "economy": 6
       }
    ],
    [
-      "MC Henriques",
+      "CH Gayle",
       {
-         "totalruns": 948,
-         "totalbowls": 150,
-         "economy": 6.32
+         "totalruns": 378,
+         "totalbowls": 60,
+         "economy": 6.3
       }
    ],
    [
-      "Z Khan",
+      "A Zampa",
       {
-         "totalruns": 936,
-         "totalbowls": 145,
-         "economy": 6.46
+         "totalruns": 696,
+         "totalbowls": 102,
+         "economy": 6.82
       }
    ],
    [
-      "MA Starc",
+      "Mustafizur Rahman",
       {
-         "totalruns": 1752,
-         "totalbowls": 258,
-         "economy": 6.79
+         "totalruns": 2532,
+         "totalbowls": 366,
+         "economy": 6.92
       }
    ],
    [
-      "GB Hogg",
+      "CH Morris",
       {
-         "totalruns": 870,
-         "totalbowls": 126,
-         "economy": 6.9
+         "totalruns": 1848,
+         "totalbowls": 264,
+         "economy": 7
       }
    ]
 ]
