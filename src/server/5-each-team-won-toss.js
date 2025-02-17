@@ -1,11 +1,11 @@
 const matches = require("../data/matches.json");
 const deliveries = require("../data/deliveries.json");
-// const fs = require('fs');
 const writeFile = require("../data/writefile/write-file.js");
 
-let answer = {};
 
-function tossandmatchwinnerteam(data) {
+
+function tossAndMatchWinnerTeam(data) {
+  let answer = {};
   for (let key in data) {
     if (data[key].toss_winner == data[key].winner) {
       if (answer[data[key].toss_winner]) {
@@ -15,8 +15,8 @@ function tossandmatchwinnerteam(data) {
   }
 }
 
-tossandmatchwinnerteam(matches);
+let teamData = tossAndMatchWinnerTeam(matches);
 
-writeFile("5-each-team-won-toss.json", JSON.stringify(answer, null, 3));
+writeFile("5-each-team-won-toss.json", JSON.stringify(teamData, null, 3));
 
 

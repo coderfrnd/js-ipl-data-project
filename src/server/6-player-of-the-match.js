@@ -1,49 +1,60 @@
 const matches = require("../data/matches.json");
 const deliveries = require("../data/deliveries.json");
 const fs = require("fs");
-const writeFile = require("../public/writefile/write-file.js");
+const writeFile = require("../data/writefile/write-file.js");
 
-function playerofthematch(data) {
-  let answer = {};
+// function to counting the number of pom awards per season
+function getPlayerOfTheMatchCount(data) {
+  let playerMatchCounts = {};
 
-  for (let key in data) {
-    if (answer[data[key].season]) {
-      if (answer[data[key].season][data[key].player_of_match]) {
-        answer[data[key].season][data[key].player_of_match]++;
+  for (let match of data) {
+    let season = match.season;
+    let player = match.player_of_match;
+
+    if (playerMatchCounts[season]) {
+      if (playerMatchCounts[season][player]) {
+        playerMatchCounts[season][player]++;
       } else {
-        answer[data[key].season][data[key].player_of_match] = 1;
+        playerMatchCounts[season][player] = 1;
       }
     } else {
-      answer[data[key].season] = {
-        [data[key].player_of_match]: 1,
+      playerMatchCounts[season] = {
+        [player]: 1,
       };
     }
   }
-  return answer;
+
+  return playerMatchCounts;
 }
 
-let answer = playerofthematch(matches);
+let playerMatchCounts = getPlayerOfTheMatchCount(matches);
 
-function findingperseason(data) {
-  let playersname = {};
-  for (let key in data) {
-    let find = data[key];
-    playersname[key] = {};
-    let a = 0;
-    for (let val in find) {
-      if (find[val] >= a) {
-        if (find[val] == a) {
-          playersname[key].push(val);
+
+function getTopPlayersPerSeason(playerMatchCounts) {
+  let topPlayers = {};
+
+  for (let season in playerMatchCounts) {
+    let seasonData = playerMatchCounts[season];
+    topPlayers[season] = [];
+    let highestCount = 0;
+
+    for (let player in seasonData) {
+      let count = seasonData[player];
+      if (count >= highestCount) {
+        if (count === highestCount) {
+          topPlayers[season].push(player);
         } else {
-          playersname[key] = [val];
+          topPlayers[season] = [player];
         }
-        a = find[val];
+        highestCount = count;
       }
     }
   }
-  return playersname;
+
+  return topPlayers;
 }
 
-let playersname = findingperseason(answer);
+let topPlayersPerSeason = getTopPlayersPerSeason(playerMatchCounts);
 
-writeFile("6-play-of-the-match.json", JSON.stringify(playersname, null, 3));
+// Writing the top players of each season to a file
+writeFile("6-player-of-the-match.json", JSON.stringify(topPlayersPerSeason, null, 3));

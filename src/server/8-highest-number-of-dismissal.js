@@ -1,8 +1,7 @@
 const deliveries = require("../data/deliveries.json");
-const matches = require("../data/matches.json");
 const writeFile = require("../data/writefile/write-file.js");
 
-function createbowlerdata(data) {
+function createBowlerData(data) {
   let profiledata = {};
 
   for (let key in data) {
@@ -26,9 +25,9 @@ function createbowlerdata(data) {
   return profiledata;
 }
 
-let bowlerWicketData = createbowlerdata(deliveries);
+let bowlerWicketData = createBowlerData(deliveries);
 
-function findmostdismisial(bowlerWicketData) {
+function findMostDismisial(bowlerWicketData) {
   let mostdismisial = {
     "no-of-wicket": 0,
   };
@@ -50,9 +49,9 @@ function findmostdismisial(bowlerWicketData) {
   }
   return mostdismisial;
 }
-let mostdismisial = findmostdismisial(bowlerWicketData);
+let mostDismisial = findMostDismisial(bowlerWicketData);
 
 writeFile(
   "8-highest-number-of-dismisial.json",
-  JSON.stringify(mostdismisial, null, 3)
+  JSON.stringify(mostDismisial, null, 3)
 );
