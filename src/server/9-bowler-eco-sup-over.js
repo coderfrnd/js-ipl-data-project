@@ -2,7 +2,7 @@ const deliveries = require("../data/deliveries.json");
 const matches = require("../data/matches.json");
 const writeFile = require("../data/writefile/write-file.js");
 
-function findonlysuperoverobject(data) {
+function findonlySuperOverObject(data) {
   let superoverobj = [];
   for (let key in data) {
     if (data[key]["is_super_over"] > 0) {
@@ -12,10 +12,10 @@ function findonlysuperoverobject(data) {
   return superoverobj;
 }
 
-let superoverarray = findonlysuperoverobject(deliveries);
+let superoverarray = findonlySuperOverObject(deliveries);
 // console.log(x.length);
 
-function runandbowldata(superoverarray) {
+function runAndBowlData(superoverarray) {
   let superoverfinal = {};
   for (let i = 0; i < superoverarray.length; i++) {
     let singleobj = superoverarray[i];
@@ -38,9 +38,9 @@ function runandbowldata(superoverarray) {
   return superoverfinal;
 }
 
-let superoverfinal = runandbowldata(superoverarray);
+let superoverfinal = runAndBowlData(superoverarray);
 
-function economycal(superoverfinal) {
+function economyCalculation(superoverfinal) {
   let besteconomy = 10000;
   let bestbowler = {};
   for (let bowlername in superoverfinal) {
@@ -67,12 +67,12 @@ function economycal(superoverfinal) {
   return bestbowler;
 }
 
-let bestbowler = economycal(superoverfinal);
+let bestBowler = economyCalculation(superoverfinal);
 //   console.log(bestbowler);
 
 writeFile(
   "9-best-economy-in-super-over.json",
-  JSON.stringify(bestbowler, null, 3)
+  JSON.stringify(bestBowler, null, 3)
 );
 
 // console.log(superoverfinal);
